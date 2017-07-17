@@ -155,6 +155,14 @@ class Inspiry_Real_Estate {
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-inspiry-agent.php';
 
 		/**
+		 * The class responsible for providing properties listing VC element
+		 */
+		function inspiry_init_vc_elements() {
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vc-elements/properties.php';
+		}
+		add_action( 'vc_before_init', 'inspiry_init_vc_elements' );
+
+		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-inspiry-real-estate-admin.php';
