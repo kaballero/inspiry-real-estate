@@ -65,16 +65,6 @@ class Inspry_VC_Lead extends WPBakeryShortCode {
 				'description' => esc_html__( 'Display property listing.', 'inspiry-real-estate' ),
 				'category'    => esc_html__( 'Real Places Theme', 'inspiry-real-estate' ),
 				"params"      => array(
-//					array(
-//						"type" => "dropdown",
-//						"heading" => esc_html__( "Layout", 'inspiry-real-estate' ),
-//						"param_name" => "layout",
-//						"value" => array(
-//							'Grid' => 'grid',
-//							'List' => 'list'
-//						),
-//						'admin_label' => true,
-//					),
 					array(
 						"type"        => "dropdown",
 						"heading"     => esc_html__( "Number of Properties", 'inspiry-real-estate' ),
@@ -266,6 +256,16 @@ class Inspry_VC_Lead extends WPBakeryShortCode {
 						"value"       => $property_features_array,
 						'admin_label' => true,
 					),
+					array(
+						"type"        => "dropdown",
+						"heading"     => esc_html__( "Listing Container", 'inspiry-real-estate' ),
+						"param_name"  => "container",
+						"value"       => array(
+							esc_html__( 'Full Width', 'inspiry-real-estate' ) => 'no',
+							esc_html__( 'Boxed', 'inspiry-real-estate' )      => 'yes',
+						),
+						'admin_label' => true,
+					),
 				)
 			)
 		);
@@ -296,6 +296,7 @@ class Inspry_VC_Lead extends WPBakeryShortCode {
 					'min_area'  => null,
 					'max_area'  => null,
 					'featured'  => 'no',
+					'container' => 'no',
 				),
 				$attr
 			)
@@ -510,6 +511,10 @@ class Inspry_VC_Lead extends WPBakeryShortCode {
 			<?php
 				// VC Properties Loop
 				if ( $properties_query->have_posts() ) :
+
+					if ( 'yes' == $container ) {
+						echo '<div class="container">';
+					}
 					?>
 					<div class="row">
 						<?php
@@ -534,8 +539,8 @@ class Inspry_VC_Lead extends WPBakeryShortCode {
 												if ( $first_status_term ) {
 													?>
 													<a href="<?php echo esc_url( get_term_link( $first_status_term ) ); ?>">
-														<span
-															class="property-status"><?php echo esc_html( $first_status_term->name ); ?></span>
+												<span
+													class="property-status"><?php echo esc_html( $first_status_term->name ); ?></span>
 													</a>
 													<?php
 												}
@@ -551,8 +556,8 @@ class Inspry_VC_Lead extends WPBakeryShortCode {
 													   rel="bookmark"><?php echo get_inspiry_custom_excerpt( get_the_title(), 9 ); ?></a>
 												</h4>
 												<div class="price-and-status">
-													<span
-														class="price"><?php echo esc_html( $vc_property->get_price() ); ?></span>
+											<span
+												class="price"><?php echo esc_html( $vc_property->get_price() ); ?></span>
 												</div>
 											</header>
 
@@ -567,8 +572,8 @@ class Inspry_VC_Lead extends WPBakeryShortCode {
 													if ( $inspiry_property_area ) {
 														?>
 														<div class="meta-wrapper">
-															<span
-																class="meta-value"><?php echo esc_html( $inspiry_property_area ); ?></span>
+													<span
+														class="meta-value"><?php echo esc_html( $inspiry_property_area ); ?></span>
 															<sub
 																class="meta-unit"><?php echo esc_html( $vc_property->get_area_postfix() ); ?></sub>
 														</div>
@@ -582,8 +587,8 @@ class Inspry_VC_Lead extends WPBakeryShortCode {
 													if ( $inspiry_property_beds ) {
 														?>
 														<div class="meta-wrapper">
-															<span
-																class="meta-value"><?php echo $inspiry_property_beds; ?></span>
+													<span
+														class="meta-value"><?php echo $inspiry_property_beds; ?></span>
 															<span
 																class="meta-label"><?php echo _n( 'Bed', 'Beds', $inspiry_property_beds, 'inspiry' ); ?></span>
 														</div>
@@ -597,8 +602,8 @@ class Inspry_VC_Lead extends WPBakeryShortCode {
 													if ( $inspiry_property_baths ) {
 														?>
 														<div class="meta-wrapper">
-															<span
-																class="meta-value"><?php echo $inspiry_property_baths; ?></span>
+													<span
+														class="meta-value"><?php echo $inspiry_property_baths; ?></span>
 															<span
 																class="meta-label"><?php echo _n( 'Bath', 'Baths', $inspiry_property_baths, 'inspiry' ); ?></span>
 														</div>
@@ -612,8 +617,8 @@ class Inspry_VC_Lead extends WPBakeryShortCode {
 													if ( $inspiry_property_garages ) {
 														?>
 														<div class="meta-wrapper">
-															<span
-																class="meta-value"><?php echo $inspiry_property_garages; ?></span>
+													<span
+														class="meta-value"><?php echo $inspiry_property_garages; ?></span>
 															<span
 																class="meta-label"><?php echo _n( 'Garage', 'Garages', $inspiry_property_garages, 'inspiry' ); ?></span>
 														</div>
@@ -636,7 +641,12 @@ class Inspry_VC_Lead extends WPBakeryShortCode {
 						?>
 					</div>
 					<!-- .row -->
+
 					<?php
+					if ( 'yes' == $container ) {
+						echo '</div>';
+						//  .container
+					}
 				endif;
 
 				wp_reset_postdata();
