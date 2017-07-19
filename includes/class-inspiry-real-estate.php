@@ -188,12 +188,6 @@ class Inspiry_Real_Estate {
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-inspiry-additional-details-meta-box.php';
 
 		/**
-		 * This file contains some theme functions as backup if theme is deactivated.
-		 * These are the only functions which are being used in both plugin and theme.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/inspiry-realplaces-functions.php';
-
-		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
