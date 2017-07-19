@@ -67,6 +67,17 @@ class Inspry_VC_Lead extends WPBakeryShortCode {
 				"params"      => array(
 					array(
 						"type"        => "dropdown",
+						"heading"     => esc_html__( "Layout", 'inspiry-real-estate' ),
+						"param_name"  => "layout",
+						"value"       => array(
+							'Grid'                  => 'grid',
+							'List'                  => 'list',
+							'List with Description' => 'list-desc'
+						),
+						'admin_label' => true,
+					),
+					array(
+						"type"        => "dropdown",
 						"heading"     => esc_html__( "Number of Properties", 'inspiry-real-estate' ),
 						"param_name"  => "count",
 						"value"       => array(
@@ -506,329 +517,380 @@ class Inspry_VC_Lead extends WPBakeryShortCode {
 
 		$properties_query = new WP_Query( apply_filters( 'inspiry_vc_properties', $properties_query_args ) );
 
-		echo '<div class="inspiry-vc-property-listing" >';
+		global $inspiry_options;
 
-		if ( false ) {
-			?>
-			<div class="container">
+		echo '<div class="inspiry-vc-property-listing">';
 
+		if ( 'yes' == $container ) {
+			echo '<div class="container">';
+		}
+
+		if ( 'list' == $layout ) {
+
+			// VC Properties Loop
+			if ( $properties_query->have_posts() ) :
+				?>
 				<div class="row">
+					<div class="col-md-12">
+						<?php
 
-					<div class="col-xs-12 site-main-content">
+							while ( $properties_query->have_posts() ) :
+								$properties_query->the_post();
+								$list_property = new Inspiry_Property( get_the_ID() );
+								?>
+								<article class="property-listing-simple property-listing-simple-2 hentry clearfix">
+									<div class="property-thumbnail col-sm-5 zero-horizontal-padding">
+										<div class="price-wrapper">
+											<span class="price"><?php $list_property->price(); ?></span>
+										</div>
+										<?php
+											/*
+											 * Display image gallery or thumbnail
+											 */
+											if ( $inspiry_options['inspiry_property_card_gallery'] ) {
+												inspiry_property_gallery( $list_property->get_post_ID(), intval( $inspiry_options['inspiry_property_card_gallery_limit'] ) );
+											} else {
+												inspiry_thumbnail();
+											}
+										?>
+									</div>
+									<!-- .property-thumbnail -->
 
-						<main id="main" class="site-main">
+									<div class="title-and-meta col-sm-7">
 
-							<?php
+										<header class="entry-header">
+											<h3 class="entry-title">
+												<a href="<?php the_permalink(); ?>" rel="bookmark"><?php the_title(); ?></a>
+											</h3>
+										</header>
+
+										<?php
+											/*
+											 * Property meta
+											 */
+											inspiry_property_meta( $list_property, array(
+												'meta' => array(
+													'area',
+													'beds',
+													'baths',
+													'garages',
+													'type',
+													'status'
+												)
+											) );
+										?>
+
+									</div>
+									<!-- .title-and-meta -->
+
+								</article><!-- .property-listing-simple-2 -->
+								<?php
+
+							endwhile;
+						?>
+
+					</div>
+					<!-- .site-main-content -->
+				</div><!-- .row -->
+				<?php
+			endif;
+
+			wp_reset_postdata();
+
+		} else if ( 'list-desc' == $layout ) {
+
+			// VC Properties Loop
+			if ( $properties_query->have_posts() ) :
+				?>
+				<div class="row">
+					<div class="col-md-12">
+						<?php
+
+							$property_list_counter = 1;
+							while ( $properties_query->have_posts() ) :
+								$properties_query->the_post();
+
+								$list_property = new Inspiry_Property( get_the_ID() );
 
 								/*
-								 * Properties List
+								 * Even / Odd Class
 								 */
-								if ( $properties_query->have_posts() ) :
+								$even_odd_class = 'listing-post-odd';
+								if ( $property_list_counter % 2 == 0 ) {
+									$even_odd_class = 'listing-post-even';
+								}
 
-									$property_list_counter = 1;
+								/*
+								 * Price title
+								 */
+								$price_title = esc_html__( 'Price', 'insiry-real-estate' );
+								if ( ! empty( $inspiry_options['inspiry_property_card_price_title'] ) ) {
+									$price_title = $inspiry_options['inspiry_property_card_price_title'];
+								}
 
-									while ( $properties_query->have_posts() ) :
+								/*
+								 * Description title
+								 */
+								$desc_title = esc_html__( 'Description', 'insiry-real-estate' );
+								if ( ! empty( $inspiry_options['inspiry_property_card_desc_title'] ) ) {
+									$desc_title = $inspiry_options['inspiry_property_card_desc_title'];
+								}
 
-										$properties_query->the_post();
+								/*
+								 * Button Text
+								 */
+								$button_text = esc_html__( 'Show Details', 'insiry-real-estate' );
+								if ( ! empty( $inspiry_options['inspiry_property_card_button_text'] ) ) {
+									$button_text = $inspiry_options['inspiry_property_card_button_text'];
+								}
+								?>
+								<article class="property-listing-simple property-listing-simple-1 hentry clearfix <?php echo esc_attr( $even_odd_class ); ?>">
 
-										// display property in list layout
-										?>
+									<div class="property-thumbnail col-sm-4 zero-horizontal-padding">
 										<?php
-
-										$list_property = new Inspiry_Property( get_the_ID() );
-										global $inspiry_options;
-
-										/*
-										 * Even / Odd Class
-										 */
-										$even_odd_class = 'listing-post-odd';
-										if ( $property_list_counter % 2 == 0) {
-											$even_odd_class = 'listing-post-even';
-										}
-
-										/*
-										 * Price title
-										 */
-										$price_title = __( 'Price', 'inspiry' );
-										if ( !empty( $inspiry_options[ 'inspiry_property_card_price_title' ] ) ) {
-											$price_title = $inspiry_options[ 'inspiry_property_card_price_title' ];
-										}
-
-										/*
-										 * Description title
-										 */
-										$desc_title = __( 'Description', 'inspiry' );
-										if ( !empty( $inspiry_options[ 'inspiry_property_card_desc_title' ] ) ) {
-											$desc_title = $inspiry_options[ 'inspiry_property_card_desc_title' ];
-										}
-
-										/*
-										 * Button Text
-										 */
-										$button_text = __( 'Show Details', 'inspiry' );
-										if ( !empty( $inspiry_options[ 'inspiry_property_card_button_text' ] ) ) {
-											$button_text = $inspiry_options[ 'inspiry_property_card_button_text' ];
-										}
+											/*
+											 * Display image gallery or thumbnail
+											 */
+											if ( $inspiry_options['inspiry_property_card_gallery'] ) {
+												inspiry_property_gallery( $list_property->get_post_ID(), intval( $inspiry_options['inspiry_property_card_gallery_limit'] ) );
+											} else {
+												inspiry_thumbnail();
+											}
 										?>
-										<article class="property-listing-simple property-listing-simple-1 hentry clearfix <?php echo esc_attr( $even_odd_class ); ?>">
+									</div><!-- .property-thumbnail -->
 
-											<div class="property-thumbnail col-sm-4 zero-horizontal-padding">
-												<?php
-													/*
-													 * Display image gallery or thumbnail
-													 */
-													if ( $inspiry_options[ 'inspiry_property_card_gallery' ] ) {
-														inspiry_property_gallery( $list_property->get_post_ID(), intval( $inspiry_options[ 'inspiry_property_card_gallery_limit' ] ) );
-													} else {
-														inspiry_thumbnail();
+									<div class="title-and-meta col-sm-8">
+
+										<header class="entry-header">
+
+											<h3 class="entry-title">
+												<a href="<?php the_permalink(); ?>" rel="bookmark"><?php the_title(); ?></a>
+											</h3>
+
+											<div class="price-wrapper hidden-lg">
+												<span class="prefix-text"><?php echo esc_html( $price_title ); ?></span>
+												<span class="price"><?php echo esc_html( $list_property->get_price_without_postfix() ); ?></span><?php
+													$price_postfix = $list_property->get_price_postfix();
+													if ( ! empty( $price_postfix ) ) {
+														?>
+														<span class="postfix-text"><?php echo ' ' . $price_postfix; ?></span><?php
 													}
 												?>
-											</div><!-- .property-thumbnail -->
+											</div>
 
-											<div class="title-and-meta col-sm-8">
+											<?php
+												/*
+												 * Address
+												 */
+												$list_property_address = $list_property->get_address();
+												if ( ! empty( $list_property_address ) ) {
+													?><p class="property-address visible-lg">
+													<i class="fa fa-map-marker"></i><?php echo esc_html( $list_property_address ); ?>
+													</p><?php
+												}
+											?>
+										</header>
 
-												<header class="entry-header">
-
-													<h3 class="entry-title"><a href="<?php the_permalink(); ?>" rel="bookmark"><?php the_title(); ?></a></h3>
-
-													<div class="price-wrapper hidden-lg">
-														<span class="prefix-text"><?php echo esc_html( $price_title ); ?></span>
-														<span class="price"><?php echo esc_html( $list_property->get_price_without_postfix() ); ?></span><?php
-															$price_postfix = $list_property->get_price_postfix();
-															if ( !empty( $price_postfix ) ) {
-																?><span class="postfix-text"><?php echo ' ' . $price_postfix; ?></span><?php
-															}
-														?>
-													</div>
-
-													<?php
-														/*
-														 * Address
-														 */
-														$list_property_address = $list_property->get_address();
-														if ( !empty( $list_property_address ) ) {
-															?><p class="property-address visible-lg"><i class="fa fa-map-marker"></i><?php echo esc_html( $list_property_address ); ?></p><?php
-														}
-													?>
-												</header>
-
-												<?php
-													/*
-													 * Property meta
-													 */
-													inspiry_property_meta( $list_property, array( 'meta' => array( 'area', 'beds', 'baths', 'garages', 'type', 'status' ) ) );
-												?>
-
-												<a class="btn-default visible-md-inline-block" href="<?php the_permalink(); ?>"><?php echo esc_html( $button_text ); ?><i class="fa fa-angle-right"></i></a>
-
-											</div><!-- .title-and-meta -->
-
-											<div class="property-description visible-lg">
-
-												<?php
-													/*
-													 * Description
-													 */
-													$property_excerpt = get_inspiry_excerpt( 12 );
-													if ( ! empty( $property_excerpt ) ) {
-														?>
-														<h4 class="title-heading"><?php echo esc_html( $desc_title ); ?></h4>
-														<p><?php echo esc_html( $property_excerpt ); ?></p>
-														<?php
-													}
-												?>
-
-												<div class="price-wrapper">
-													<span class="prefix-text"><?php echo esc_html( $price_title ); ?></span>
-													<span class="price"><?php echo esc_html( $list_property->get_price_without_postfix() ); ?></span><?php
-														$price_postfix = $list_property->get_price_postfix();
-														if ( !empty( $price_postfix ) ) {
-															?><span class="postfix-text"><?php echo ' ' . $price_postfix; ?></span><?php
-														}
-													?>
-												</div>
-
-												<a class="btn-default" href="<?php the_permalink(); ?>"><?php echo esc_html( $button_text ); ?><i class="fa fa-angle-right"></i></a>
-
-											</div><!-- .property-description -->
-
-										</article><!-- .property-listing-simple -->
 										<?php
+											/*
+											 * Property meta
+											 */
+											inspiry_property_meta( $list_property, array(
+												'meta' => array(
+													'area',
+													'beds',
+													'baths',
+													'garages',
+													'type',
+													'status'
+												)
+											) );
+										?>
 
-										$property_list_counter++;
+										<a class="btn-default visible-md-inline-block" href="<?php the_permalink(); ?>"><?php echo esc_html( $button_text ); ?>
+											<i class="fa fa-angle-right"></i></a>
 
-									endwhile;
+									</div><!-- .title-and-meta -->
 
-									wp_reset_postdata();
+									<div class="property-description visible-lg">
 
-								endif;
-							?>
+										<?php
+											/*
+											 * Description
+											 */
+											$property_excerpt = get_inspiry_excerpt( 12 );
+											if ( ! empty( $property_excerpt ) ) {
+												?>
+												<h4 class="title-heading"><?php echo esc_html( $desc_title ); ?></h4>
+												<p><?php echo esc_html( $property_excerpt ); ?></p>
+												<?php
+											}
+										?>
 
-						</main>
-						<!-- .site-main -->
+										<div class="price-wrapper">
+											<span class="prefix-text"><?php echo esc_html( $price_title ); ?></span>
+											<span class="price"><?php echo esc_html( $list_property->get_price_without_postfix() ); ?></span><?php
+												$price_postfix = $list_property->get_price_postfix();
+												if ( ! empty( $price_postfix ) ) {
+													?>
+													<span class="postfix-text"><?php echo ' ' . $price_postfix; ?></span><?php
+												}
+											?>
+										</div>
+
+										<a class="btn-default" href="<?php the_permalink(); ?>"><?php echo esc_html( $button_text ); ?>
+											<i class="fa fa-angle-right"></i></a>
+
+									</div><!-- .property-description -->
+
+								</article><!-- .property-listing-simple -->
+								<?php
+
+								$property_list_counter ++;
+
+							endwhile;
+
+						?>
 
 					</div>
 					<!-- .site-main-content -->
 
-				</div>
-				<!-- .row -->
+				</div><!-- .row -->
+				<?php
+			endif;
 
-			</div>
-			<?php
+			wp_reset_postdata();
+
 		} else {
 
-			?>
+			// VC Properties Loop
+			if ( $properties_query->have_posts() ) :
+				?>
+				<div class="row">
+					<?php
+						$properties_count = 1;
+						$columns_count    = 3;
 
-			<div class="property-listing-three fade-in-up <?php echo inspiry_animation_class(); ?>">
-				<?php
-					// VC Properties Loop
-					if ( $properties_query->have_posts() ) :
+						while ( $properties_query->have_posts() ) :
 
-						if ( 'yes' == $container ) {
-							echo '<div class="container">';
-						}
-						?>
-						<div class="row">
-							<?php
-								$properties_count = 1;
-								$columns_count    = 3;
+							$properties_query->the_post();
 
-								while ( $properties_query->have_posts() ) :
+							$vc_property = new Inspiry_Property( get_the_ID() );
+							?>
+							<div class="col-xs-6 custom-col-xs-12 col-sm-6 col-md-4 <?php echo inspiry_col_animation_class( $columns_count, $properties_count ) . ' ' . inspiry_animation_class(); ?>">
 
-									$properties_query->the_post();
+								<article class="hentry property-listing-three-post image-transition ">
 
-									$vc_property = new Inspiry_Property( get_the_ID() );
-									?>
-									<div
-										class="col-xs-6 custom-col-xs-12 col-sm-6 col-md-4 <?php echo inspiry_col_animation_class( $columns_count, $properties_count ) . ' ' . inspiry_animation_class(); ?>">
-
-										<article class="hentry property-listing-three-post image-transition ">
-
-											<div class="property-thumbnail">
-												<?php inspiry_thumbnail(); ?>
-												<?php
-													$first_status_term = $vc_property->get_taxonomy_first_term( 'property-status', 'all' );
-													if ( $first_status_term ) {
-														?>
-														<a href="<?php echo esc_url( get_term_link( $first_status_term ) ); ?>">
-												<span
-													class="property-status"><?php echo esc_html( $first_status_term->name ); ?></span>
-														</a>
-														<?php
-													}
+									<div class="property-thumbnail">
+										<?php inspiry_thumbnail(); ?>
+										<?php
+											$first_status_term = $vc_property->get_taxonomy_first_term( 'property-status', 'all' );
+											if ( $first_status_term ) {
 												?>
+												<a href="<?php echo esc_url( get_term_link( $first_status_term ) ); ?>">
+													<span class="property-status"><?php echo esc_html( $first_status_term->name ); ?></span>
+												</a>
+												<?php
+											}
+										?>
+									</div>
+									<!-- .property-thumbnail -->
+
+									<div class="property-description">
+
+										<header class="entry-header">
+											<h4 class="entry-title">
+												<a href="<?php the_permalink(); ?>" rel="bookmark"><?php echo get_inspiry_custom_excerpt( get_the_title(), 9 ); ?></a>
+											</h4>
+											<div class="price-and-status">
+												<span class="price"><?php echo esc_html( $vc_property->get_price() ); ?></span>
 											</div>
-											<!-- .property-thumbnail -->
+										</header>
 
-											<div class="property-description">
+										<p><?php inspiry_excerpt( 10, "" ); ?></p>
 
-												<header class="entry-header">
-													<h4 class="entry-title">
-														<a href="<?php the_permalink(); ?>"
-														   rel="bookmark"><?php echo get_inspiry_custom_excerpt( get_the_title(), 9 ); ?></a>
-													</h4>
-													<div class="price-and-status">
-											<span
-												class="price"><?php echo esc_html( $vc_property->get_price() ); ?></span>
-													</div>
-												</header>
-
-												<p><?php inspiry_excerpt( 10, "" ); ?></p>
-
-												<div class="property-meta entry-meta clearfix">
-													<?php
-														/*
-														 * Area
-														 */
-														$inspiry_property_area = $vc_property->get_area();
-														if ( $inspiry_property_area ) {
-															?>
-															<div class="meta-wrapper">
-													<span
-														class="meta-value"><?php echo esc_html( $inspiry_property_area ); ?></span>
-																<sub
-																	class="meta-unit"><?php echo esc_html( $vc_property->get_area_postfix() ); ?></sub>
-															</div>
-															<?php
-														}
-
-														/*
-														 * Beds
-														 */
-														$inspiry_property_beds = $vc_property->get_beds();
-														if ( $inspiry_property_beds ) {
-															?>
-															<div class="meta-wrapper">
-													<span
-														class="meta-value"><?php echo $inspiry_property_beds; ?></span>
-																<span
-																	class="meta-label"><?php echo _n( 'Bed', 'Beds', $inspiry_property_beds, 'inspiry' ); ?></span>
-															</div>
-															<?php
-														}
-
-														/*
-														* Beds
-														*/
-														$inspiry_property_baths = $vc_property->get_baths();
-														if ( $inspiry_property_baths ) {
-															?>
-															<div class="meta-wrapper">
-													<span
-														class="meta-value"><?php echo $inspiry_property_baths; ?></span>
-																<span
-																	class="meta-label"><?php echo _n( 'Bath', 'Baths', $inspiry_property_baths, 'inspiry' ); ?></span>
-															</div>
-															<?php
-														}
-
-														/*
-														* Garages
-														*/
-														$inspiry_property_garages = $vc_property->get_garages();
-														if ( $inspiry_property_garages ) {
-															?>
-															<div class="meta-wrapper">
-													<span
-														class="meta-value"><?php echo $inspiry_property_garages; ?></span>
-																<span
-																	class="meta-label"><?php echo _n( 'Garage', 'Garages', $inspiry_property_garages, 'inspiry' ); ?></span>
-															</div>
-															<?php
-														}
+										<div class="property-meta entry-meta clearfix">
+											<?php
+												/*
+												 * Area
+												 */
+												$inspiry_property_area = $vc_property->get_area();
+												if ( $inspiry_property_area ) {
 													?>
+													<div class="meta-wrapper">
+														<span class="meta-value"><?php echo esc_html( $inspiry_property_area ); ?></span>
+														<sub class="meta-unit"><?php echo esc_html( $vc_property->get_area_postfix() ); ?></sub>
+													</div>
+													<?php
+												}
 
-												</div>
+												/*
+												 * Beds
+												 */
+												$inspiry_property_beds = $vc_property->get_beds();
+												if ( $inspiry_property_beds ) {
+													?>
+													<div class="meta-wrapper">
+														<span class="meta-value"><?php echo $inspiry_property_beds; ?></span>
+														<span class="meta-label"><?php echo _n( 'Bed', 'Beds', $inspiry_property_beds, 'insiry-real-estate' ); ?></span>
+													</div>
+													<?php
+												}
 
-											</div>
-											<!-- .property-description -->
+												/*
+												* Beds
+												*/
+												$inspiry_property_baths = $vc_property->get_baths();
+												if ( $inspiry_property_baths ) {
+													?>
+													<div class="meta-wrapper">
+														<span class="meta-value"><?php echo $inspiry_property_baths; ?></span>
+														<span class="meta-label"><?php echo _n( 'Bath', 'Baths', $inspiry_property_baths, 'insiry-real-estate' ); ?></span>
+													</div>
+													<?php
+												}
 
-										</article>
+												/*
+												* Garages
+												*/
+												$inspiry_property_garages = $vc_property->get_garages();
+												if ( $inspiry_property_garages ) {
+													?>
+													<div class="meta-wrapper">
+														<span class="meta-value"><?php echo $inspiry_property_garages; ?></span>
+														<span class="meta-label"><?php echo _n( 'Garage', 'Garages', $inspiry_property_garages, 'insiry-real-estate' ); ?></span>
+													</div>
+													<?php
+												}
+											?>
+
+										</div>
 
 									</div>
-									<?php
-									$properties_count ++;
+									<!-- .property-description -->
 
-								endwhile;
-							?>
-						</div>
-						<!-- .row -->
+								</article>
 
-						<?php
-						if ( 'yes' == $container ) {
-							echo '</div>';
-							//  .container
-						}
-					endif;
+							</div>
+							<?php
+							$properties_count ++;
 
-					wp_reset_postdata();
-				?>
-			</div><!-- .property-listing-three -->
+						endwhile;
+					?>
+				</div><!-- .row -->
+				<?php
+			endif;
 
-			<?php
+			wp_reset_postdata();
+		}
+
+		if ( 'yes' == $container ) {
+			echo '</div>';
+			// .container
 		}
 
 		echo '</div>';
+		// .inspiry-vc-property-listing
 
 		return ob_get_clean();
 	}
