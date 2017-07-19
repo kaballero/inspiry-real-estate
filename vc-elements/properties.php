@@ -315,6 +315,11 @@ class Inspry_VC_Lead extends WPBakeryShortCode {
 
 		ob_start();
 
+		if ( ! function_exists( 'inspiry_theme_setup' ) ) {
+			echo '<p class="alert alert-warning">' . esc_html__( 'Real Places theme must be activated to use Property Listing Visual Composer element!', 'inspiry-real-estate' ) . '</p>';
+			return;
+		}
+
 		$properties_query_args = array(
 			'post_type'      => 'property',
 			'posts_per_page' => $count,
