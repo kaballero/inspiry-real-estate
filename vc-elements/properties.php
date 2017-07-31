@@ -4,12 +4,12 @@ Element Description: Property Listing
 */
 
 // Element Class
-class Inspry_VC_Lead extends WPBakeryShortCode {
+class Inspiry_VC_Lead extends WPBakeryShortCode {
 
 	// Element Init
 	function __construct() {
 		add_action( 'init', array( $this, 'element_mapping' ) );
-		add_shortcode( 'inspry_properties', array( $this, 'element_output' ) );
+		add_shortcode( 'inspiry_properties', array( $this, 'element_output' ) );
 	}
 
 	// Element Mapping
@@ -61,7 +61,7 @@ class Inspry_VC_Lead extends WPBakeryShortCode {
 
 			array(
 				'name'        => esc_html__( 'Properties', 'inspiry-real-estate' ),
-				'base'        => 'inspry_properties',
+				'base'        => 'inspiry_properties',
 				'description' => esc_html__( 'Display property listing.', 'inspiry-real-estate' ),
 				'category'    => esc_html__( 'Real Places Theme', 'inspiry-real-estate' ),
 				"params"      => array(
@@ -903,4 +903,4 @@ class Inspry_VC_Lead extends WPBakeryShortCode {
 } // End Element Class
 
 // Element Class Init
-new Inspry_VC_Lead();
+new Inspiry_VC_Lead();
