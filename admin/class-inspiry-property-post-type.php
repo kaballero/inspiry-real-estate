@@ -488,6 +488,15 @@ class Inspiry_Property_Post_Type {
                     'tab' => 'details',
                 ),
 
+                array(
+                    'id' => "{$prefix}year_built",
+                    'name' => __('Year Built', 'inspiry-real-estate'),
+                    'desc' => __('Example value: 2017', 'inspiry-real-estate'),
+                    'type' => 'text',
+                    'std' => "",
+                    'columns' => 6,
+                    'tab' => 'details',
+                ),
 
                 // Map
                 array(

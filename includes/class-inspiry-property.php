@@ -40,6 +40,7 @@ class Inspiry_Property {
         'payment_status'        => 'payment_status',
         'video_url'             => 'REAL_HOMES_tour_video_url',
         'video_image'           => 'REAL_HOMES_tour_video_image',
+        'year_built'            => 'REAL_HOMES_year_built',
     );
 
     /**
@@ -152,6 +153,17 @@ class Inspiry_Property {
             return false;
         }
         return $this->get_property_meta( $this->meta_keys['garages'] );
+    }
+
+	/**
+	 * Return property Year
+	 * @return bool|mixed
+   	 */
+    public function get_year(){
+        if ( ! $this->property_id ) {
+            return false;
+        }
+        return $this->get_property_meta( $this->meta_keys['year_built'] );
     }
 
     /**
