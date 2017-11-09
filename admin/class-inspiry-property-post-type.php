@@ -494,7 +494,7 @@ class Inspiry_Property_Post_Type {
                     'desc' => __('Example value: 2017', 'inspiry-real-estate'),
                     'type' => 'text',
                     'std' => "",
-                    'columns' => 6,
+                    'columns' => 12,
                     'tab' => 'details',
                 ),
 
