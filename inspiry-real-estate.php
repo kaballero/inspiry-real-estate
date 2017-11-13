@@ -176,3 +176,5 @@ if ( !class_exists( 'RWMB_Tabs' ) ) {
 if ( !class_exists( 'RWMB_Group' ) ) {
 	require_once ( plugin_dir_path( __FILE__ ) . 'meta-box-extensions/meta-box-group/meta-box-group.php' );               // tabs
 }
+
+

@@ -664,6 +664,16 @@ class Inspiry_Property_Post_Type {
                     'columns' => 12,
                     'tab' => 'misc',
                 ),
+
+                array(
+                    'id'    => "{$prefix}sticky",
+                    'type'  => 'checkbox',
+                    'name'  => esc_html__( 'Make this property sticky for home and listings pages', 'inspiry-real-estate' ),
+                    'desc'  => esc_html__( 'Yes', 'inspiry-real-estate' ),
+                    'std'   => 0,
+                    'columns'   => 12,
+                    'tab'       => 'misc',
+                ),
                 array(
                     'id' => "{$prefix}attachments",
                     'name' => __('Attachments', 'inspiry-real-estate'),
