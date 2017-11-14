@@ -9,7 +9,7 @@
  * Plugin Name:       Inspiry Real Estate
  * Plugin URI:        http://inspirythemes.com/
  * Description:       Inspiry real estate plugin provides property post type and agent post type with related functionality.
- * Version:           1.3.0
+ * Version:           1.3.1
  * Author:            M Saqib Sarwar
  * Author URI:        http://themeforest.net/user/InspiryThemes
  * Text Domain:       inspiry-real-estate
@@ -192,7 +192,7 @@ if ( ! function_exists( 'inspiry_make_sticky_properties' ) ) {
 	 * @param string $meta_key - Meta key string.
 	 * @param mix $meta_value - Meta value.
 	 *
-	 * @since 1.6.1
+	 * @since 1.3.1
 	 */
 	function inspiry_make_sticky_properties( $meta_id, $property_id, $meta_key, $meta_value ) {
 
@@ -239,7 +239,7 @@ if ( ! function_exists( 'inspiry_make_properties_stick_at_top' ) ) {
 	 * @param  WP_Query $query - The WP_Query instance (passed by reference).
 	 *
 	 * @return array
-	 * @since  1.6.1
+	 * @since  1.3.1
 	 */
 	function inspiry_make_properties_stick_at_top( $posts, $query ) {
 
