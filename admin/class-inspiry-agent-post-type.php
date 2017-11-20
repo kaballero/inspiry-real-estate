@@ -165,62 +165,74 @@ class Inspiry_Agent_Post_Type {
                     'name'  => __( 'Job Title', 'inspiry-real-estate' ),
                     'id'    => "inspiry_job_title",
                     'type'  => 'text',
+                    'columns' => 6,
                 ),
                 array(
                     'name'  => __( 'Email Address', 'inspiry-real-estate' ),
                     'id'    => "{$prefix}agent_email",
                     'desc'  => __( "Agent related messages from contact form on property details page, will be sent on this email address.", "inspiry-real-estate" ),
                     'type'  => 'email',
+                    'columns' => 6,
                 ),
                 array(
                     'name'  => __( 'Mobile Number', 'inspiry-real-estate' ),
                     'id'    => "{$prefix}mobile_number",
                     'type'  => 'text',
+                    'columns' => 6,
                 ),
                 array(
                     'name'  => __('Office Number', 'inspiry-real-estate'),
                     'id'    => "{$prefix}office_number",
                     'type'  => 'text',
+                    'columns' => 6,
                 ),
                 array(
                     'name'  => __('Fax Number', 'inspiry-real-estate'),
                     'id'    => "{$prefix}fax_number",
                     'type'  => 'text',
+                    'columns' => 6,
                 ),
                 array(
                     'name'  => __( 'Office Address', 'inspiry-real-estate' ),
                     'id'    => "inspiry_office_address",
                     'type'  => 'text',
+                    'columns' => 6,
                 ),
                 array(
                     'name'  => __('Facebook URL', 'inspiry-real-estate'),
                     'id'    => "{$prefix}facebook_url",
                     'type'  => 'url',
+                    'columns' => 6,
                 ),
                 array(
                     'name'  => __('Twitter URL', 'inspiry-real-estate'),
                     'id'    => "{$prefix}twitter_url",
                     'type'  => 'url',
+                    'columns' => 6,
                 ),
                 array(
                     'name'  => __('Google Plus URL', 'inspiry-real-estate'),
                     'id'    => "{$prefix}google_plus_url",
                     'type'  => 'url',
+                    'columns' => 6,
                 ),
                 array(
                     'name'  => __('LinkedIn URL', 'inspiry-real-estate'),
                     'id'    => "{$prefix}linked_in_url",
                     'type'  => 'text',
+                    'columns' => 6,
                 ),
                 array(
                     'name'  => __('Pinterest URL', 'inspiry-real-estate'),
                     'id'    => "inspiry_pinterest_url",
                     'type'  => 'url',
+                    'columns' => 6,
                 ),
                 array(
                     'name'  => __('Instagram URL', 'inspiry-real-estate'),
                     'id'    => "inspiry_instagram_url",
                     'type'  => 'url',
+                    'columns' => 6,
                 )
 
             )
