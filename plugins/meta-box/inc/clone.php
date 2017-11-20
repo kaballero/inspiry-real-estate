@@ -1,17 +1,19 @@
 <?php
-
 /**
- * The Meta Box Clone class.
+ * The clone module, allowing users to clone (duplicate) fields.
  *
  * @package Meta Box
  */
-class RWMB_Clone {
 
+/**
+ * The clone class.
+ */
+class RWMB_Clone {
 	/**
-	 * Get clone field HTML
+	 * Get clone field HTML.
 	 *
-	 * @param mixed $meta
-	 * @param array $field
+	 * @param mixed $meta  The meta value.
+	 * @param array $field The field parameters.
 	 *
 	 * @return string
 	 */
@@ -31,12 +33,19 @@ class RWMB_Clone {
 					$sub_field['address_field'] = $field['address_field'] . "_{$index}";
 				}
 				$sub_field['id'] = $field['id'] . "_{$index}";
+
+				if ( ! empty( $sub_field['attributes']['id'] ) ) {
+					$sub_field['attributes']['id'] = $sub_field['attributes']['id'] . "_{$index}";
+				}
 			}
-			if ( $field['multiple'] ) {
+
+			if ( in_array( $sub_field['type'], array( 'file', 'image' ), true ) ) {
+				$sub_field['file_input_name'] = $field['file_input_name'] . "[{$index}]";
+			} elseif ( $field['multiple'] ) {
 				$sub_field['field_name'] .= '[]';
 			}
 
-			// Wrap field HTML in a div with class="rwmb-clone" if needed
+			// Wrap field HTML in a div with class="rwmb-clone" if needed.
 			$class     = "rwmb-clone rwmb-{$field['type']}-clone";
 			$sort_icon = '';
 			if ( $field['sort_clone'] ) {
@@ -45,16 +54,16 @@ class RWMB_Clone {
 			}
 			$input_html = "<div class='$class'>" . $sort_icon;
 
-			// Call separated methods for displaying each type of field
+			// Call separated methods for displaying each type of field.
 			$input_html .= RWMB_Field::call( $sub_field, 'html', $sub_meta );
 			$input_html = RWMB_Field::filter( 'html', $input_html, $sub_field, $sub_meta );
 
-			// Remove clone button
+			// Remove clone button.
 			$input_html .= self::remove_clone_button( $sub_field );
 			$input_html .= '</div>';
 
 			$field_html .= $input_html;
-		}
+		} // End foreach().
 
 		return $field_html;
 	}
@@ -62,40 +71,49 @@ class RWMB_Clone {
 	/**
 	 * Set value of meta before saving into database
 	 *
-	 * @param mixed $new
-	 * @param mixed $old
-	 * @param int   $post_id
-	 * @param array $field
+	 * @param mixed $new     The submitted meta value.
+	 * @param mixed $old     The existing meta value.
+	 * @param int   $post_id The post ID.
+	 * @param array $field   The field parameters.
 	 *
 	 * @return mixed
 	 */
 	public static function value( $new, $old, $post_id, $field ) {
+		if ( ! is_array( $new ) ) {
+			$new = array();
+		}
+
+		if ( in_array( $field['type'], array( 'file', 'image' ), true ) ) {
+			return RWMB_Field::call( $field, 'value', $new, '', $post_id );
+		}
+
 		foreach ( $new as $key => $value ) {
 			$old_value = isset( $old[ $key ] ) ? $old[ $key ] : null;
 			$value     = RWMB_Field::call( $field, 'value', $value, $old_value, $post_id );
 			$new[ $key ] = RWMB_Field::filter( 'sanitize', $value, $field );
 		}
+
 		return $new;
 	}
 
 	/**
-	 * Add clone button
+	 * Add clone button.
 	 *
-	 * @param array $field Field parameter
+	 * @param array $field Field parameters.
 	 * @return string $html
 	 */
 	public static function add_clone_button( $field ) {
 		if ( ! $field['clone'] ) {
 			return '';
 		}
-		$text = RWMB_Field::filter( 'add_clone_button_text', __( '+ Add more', 'meta-box' ), $field );
+		$text = RWMB_Field::filter( 'add_clone_button_text', $field['add_button'], $field );
 		return '<a href="#" class="rwmb-button button-primary add-clone">' . esc_html( $text ) . '</a>';
 	}
 
 	/**
-	 * Remove clone button
+	 * Remove clone button.
 	 *
-	 * @param array $field Field parameter
+	 * @param array $field Field parameters.
 	 * @return string $html
 	 */
 	public static function remove_clone_button( $field ) {
