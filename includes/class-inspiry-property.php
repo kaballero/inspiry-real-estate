@@ -40,7 +40,7 @@ class Inspiry_Property {
         'payment_status'        => 'payment_status',
         'video_url'             => 'REAL_HOMES_tour_video_url',
         'video_image'           => 'REAL_HOMES_tour_video_image',
-        'year_built'            => 'REAL_HOMES_year_built',
+        'year_built'            => 'REAL_HOMES_property_year_built',
     );
 
     /**

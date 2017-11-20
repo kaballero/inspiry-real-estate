@@ -489,7 +489,7 @@ class Inspiry_Property_Post_Type {
                 ),
 
                 array(
-                    'id' => "{$prefix}year_built",
+                    'id' => "{$prefix}property_year_built",
                     'name' => __('Year Built', 'inspiry-real-estate'),
                     'desc' => __('Example value: 2017', 'inspiry-real-estate'),
                     'type' => 'text',
