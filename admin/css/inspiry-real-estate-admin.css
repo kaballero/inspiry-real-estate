@@ -10,6 +10,36 @@
     width: 100%;
 }
 
+
+.rwmb-column .rwmb-label {
+    margin-bottom: 5px;
+}
+
+.rwmb-column .rwmb-field{
+    margin-bottom: 15px;
+}
+
+.rwmb-column .rwmb-input input[type="text"],
+.rwmb-column .rwmb-input input[type="password"],
+.rwmb-column .rwmb-input input[type="email"],
+.rwmb-column .rwmb-input input[type="number"],
+.rwmb-column .rwmb-input input[type="search"],
+.rwmb-column .rwmb-input input[type="tel"],
+.rwmb-column .rwmb-input input[type="time"],
+.rwmb-column .rwmb-input input[type="url"],
+.rwmb-column .rwmb-input select,
+.rwmb-column .rwmb-input textarea {
+    width: 90%;
+}
+
+.rwmb-column.rwmb-column-12 .rwmb-input input[type="text"],
+.rwmb-column.rwmb-column-12 .rwmb-input input[type="url"],
+.rwmb-column.rwmb-column-12 .rwmb-input input[type="search"],
+.rwmb-column.rwmb-column-12 .rwmb-input input[type="number"],
+.rwmb-column.rwmb-column-12 .rwmb-input textarea {
+    width: 99%;
+}
+
 /**
  *  Additional details meta box
  */

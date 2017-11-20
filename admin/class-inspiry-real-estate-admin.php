@@ -76,11 +76,7 @@ class Inspiry_Real_Estate_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-
-        if ( $this::is_property_edit_page() || ( isset( $_GET['page'] ) && ( $_GET['page'] == 'inspiry_real_estate' ) ) ) {
             wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/inspiry-real-estate-admin.css', array(), $this->version, 'all');
-        }
-
 	}
 
 	/**
