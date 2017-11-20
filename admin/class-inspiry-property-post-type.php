@@ -494,7 +494,7 @@ class Inspiry_Property_Post_Type {
                     'desc' => __('Example value: 2017', 'inspiry-real-estate'),
                     'type' => 'text',
                     'std' => "",
-                    'columns' => 12,
+                    'columns' => 6,
                     'tab' => 'details',
                 ),
 
@@ -639,6 +639,7 @@ class Inspiry_Property_Post_Type {
                     ),
                     'columns' => 12,
                     'tab' => 'agent',
+                    'inline' => false,
                 ),
                 array(
                     'name' => __('Agent', 'inspiry-real-estate'),
@@ -663,6 +664,7 @@ class Inspiry_Property_Post_Type {
                     ),
                     'columns' => 12,
                     'tab' => 'misc',
+                    'inline' => false,
                 ),
 				
                 array(
@@ -697,6 +699,7 @@ class Inspiry_Property_Post_Type {
                     ),
                     'columns' => 12,
                     'tab' => 'home-slider',
+                    'inline' => false,
                 ),
                 array(
                     'name' => __('Slider Image', 'inspiry-real-estate'),
