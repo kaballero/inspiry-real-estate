@@ -610,14 +610,14 @@ class Inspiry_Property_Post_Type {
                 // Property Video
                 array(
                     'id' => "{$prefix}tour_video_url",
-                    'name' => __('Virtual Tour Video URL', 'inspiry-real-estate'),
-                    'desc' => __('Provide virtual tour video URL. YouTube, Vimeo, SWF File and MOV File are supported', 'inspiry-real-estate'),
+                    'name' => __('Property Video URL', 'inspiry-real-estate'),
+                    'desc' => __('Provide property video URL. YouTube, Vimeo, SWF File and MOV File are supported', 'inspiry-real-estate'),
                     'type' => 'text',
                     'columns' => 12,
                     'tab' => 'video',
                 ),
                 array(
-                    'name' => __('Virtual Tour Video Image', 'inspiry-real-estate'),
+                    'name' => __('Property Video Image', 'inspiry-real-estate'),
                     'id' => "{$prefix}tour_video_image",
                     'desc' => $video_image_desc,
                     'type' => 'image_advanced',
