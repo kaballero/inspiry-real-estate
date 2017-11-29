@@ -626,6 +626,15 @@ class Inspiry_Property_Post_Type {
                     'tab' => 'video',
                 ),
 
+                array(
+                    'id' => "{$prefix}360_virtual_tour",
+                    'name' => esc_html__('Virtual Tour 360 Embed Code', 'inspiry-real-estate'),
+                    'desc' => esc_html__('Provide iframe embed code for the 360 virtual tour.', 'inspiry-real-estate'),
+                    'type' => 'textarea',
+                    'columns' => 12,
+                    'tab' => 'video',
+                ),
+
                 // Agents
                 array(
                     'name' => __('What to display in agent information box ?', 'inspiry-real-estate'),
