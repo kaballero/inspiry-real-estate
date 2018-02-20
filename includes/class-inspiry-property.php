@@ -318,7 +318,19 @@ class Inspiry_Property {
             return null;
         }
         $price_amount = doubleval( $this->get_property_meta( $this->meta_keys[ 'price' ] ) );
+
         $price_postfix = $this->get_property_meta( $this->meta_keys[ 'price_postfix' ] );
+
+
+        if ( class_exists( 'WP_Currencies' ) && isset( $_COOKIE[ "current_currency" ] ) ) {
+            $current_currency = $_COOKIE[ "current_currency" ];
+            if ( currency_exists( $current_currency ) ) {    // validate current currency
+                $base_currency = inspiry_get_base_currency();
+                $converted_price = convert_currency( $price_amount, $base_currency, $current_currency );
+                return format_currency( $converted_price, $current_currency ) . ' ' . $price_postfix;
+            }
+        }
+
         return $this->format_price( $price_amount, $price_postfix );
     }
 
